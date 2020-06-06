@@ -2,23 +2,32 @@ package pl.konrad_wajs.order_items.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.konrad_wajs.order_items.dto.OrderDTO;
 import pl.konrad_wajs.order_items.persistence.entities.Order;
-import pl.konrad_wajs.order_items.persistence.repositories.OrderRepository;
+import pl.konrad_wajs.order_items.services.OrderService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/")
 @CrossOrigin(origins = "*")
 public class OrderController {
-    private OrderRepository orderRepository;
+    private OrderService orderService;
 
     @Autowired
-    public OrderController(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
     }
 
     @PostMapping(path = "/orders/")
     public @ResponseBody
-    Order addOrder(@RequestBody Order order) {
-        return orderRepository.save(order);
+    OrderDTO addOrder(@RequestBody OrderDTO order) {
+        return orderService.addOrder(order);
+    }
+
+    @GetMapping(path = "/orders/")
+    public @ResponseBody
+    List<OrderDTO> getAllOrders() {
+        return orderService.getAllOrders();
     }
 }
