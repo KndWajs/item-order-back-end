@@ -40,7 +40,7 @@ public class ItemMapper {
                 .id(item.getId())
                 .size(item.getSize())
                 .color(item.getColor())
-                .order(orderId == null ? null : orderRepository.findById(orderId).get())
+                .order(validateOrderId(orderId) ? orderRepository.findById(orderId).get() : null)
                 .build();
     }
 
@@ -56,5 +56,9 @@ public class ItemMapper {
             return null;
         }
         return items.stream().map(dto -> toEntity(dto, orderId)).collect(Collectors.toList());
+    }
+
+    private boolean validateOrderId(Long orderId) {
+        return orderId != null && orderRepository.existsById(orderId);
     }
 }

@@ -37,7 +37,7 @@ public class OrderService {
 
         OrderDTO savedOrder = saveOrderWithoutItems(orderDTO);
 
-        if (!StringUtils.isEmpty(orderDTO)) {
+        if (!StringUtils.isEmpty(orderDTO.getItems())) {
             for (ItemDTO itemDTO : orderDTO.getItems()) {
                 savedOrder.getItems().add(itemService.save(itemDTO, savedOrder.getId()));
             }
@@ -67,6 +67,7 @@ public class OrderService {
     }
 
     private OrderDTO saveOrderWithoutItems(OrderDTO orderDTO) {
+
         Order order = orderMapper.toEntity(orderDTO);
         order.setCreationDate(new Timestamp(System.currentTimeMillis()));
         order.setId(null);
