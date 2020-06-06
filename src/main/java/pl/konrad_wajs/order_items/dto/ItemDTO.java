@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.konrad_wajs.order_items.enums.ItemColor;
+import pl.konrad_wajs.order_items.enums.ItemSize;
 
 @Data
 @Builder
@@ -13,7 +15,7 @@ public class ItemDTO {
 
     private Long id;
 
-    private String size;
+    private ItemSize size;
 
-    private String color;
+    private ItemColor color;
 }

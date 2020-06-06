@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.konrad_wajs.order_items.enums.ItemColor;
+import pl.konrad_wajs.order_items.enums.ItemSize;
 
 import javax.persistence.*;
 
@@ -20,11 +22,13 @@ public class Item implements EntityInterface {
     @Column(name = "id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "size")
-    private String size;
+    private ItemSize size;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "color")
-    private String color;
+    private ItemColor color;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
