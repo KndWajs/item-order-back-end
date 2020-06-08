@@ -6,12 +6,15 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.konrad_wajs.order_items.base.AbstractIntegrationTestBase;
 import pl.konrad_wajs.order_items.base.ItemGenerator;
 import pl.konrad_wajs.order_items.base.OrderGenerator;
+import pl.konrad_wajs.order_items.base.StoreElementGenerator;
+import pl.konrad_wajs.order_items.dto.ItemDTO;
 import pl.konrad_wajs.order_items.dto.OrderDTO;
 import pl.konrad_wajs.order_items.exceptions.EmptyRequiredFieldException;
 import pl.konrad_wajs.order_items.exceptions.ObjectIsNullException;
 import pl.konrad_wajs.order_items.mappers.OrderMapper;
 import pl.konrad_wajs.order_items.persistence.entities.Item;
 import pl.konrad_wajs.order_items.persistence.entities.Order;
+import pl.konrad_wajs.order_items.persistence.entities.StoreElement;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -57,6 +60,7 @@ public class OrderServiceTest extends AbstractIntegrationTestBase {
     @Test
     public void shouldSaveOrder() {
         // given
+        addElementToStore();
         OrderDTO orderDTO = orderMapper.toDTO(createOrder());
 
         // when
@@ -88,6 +92,7 @@ public class OrderServiceTest extends AbstractIntegrationTestBase {
     @Test
     public void shouldSaveOrderWhenIdIsNotNull() {
         // given
+        addElementToStore();
         OrderDTO orderDTO = orderMapper.toDTO(createOrder());
         orderDTO.setId(323L);
 
@@ -144,4 +149,11 @@ public class OrderServiceTest extends AbstractIntegrationTestBase {
 
         return order;
     }
+
+    private void addElementToStore() {
+        StoreElement storeElement = StoreElementGenerator.getSampleItemEntity();
+        ItemDTO itemDTO = ItemDTO.builder().size(storeElement.getSize()).color(storeElement.getColor()).build();
+        entityManager.persist(storeElement);
+    }
+
 }

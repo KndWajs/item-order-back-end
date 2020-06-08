@@ -10,19 +10,28 @@ import pl.konrad_wajs.order_items.exceptions.ObjectIsNullException;
 import pl.konrad_wajs.order_items.mappers.ItemMapper;
 import pl.konrad_wajs.order_items.persistence.entities.Item;
 import pl.konrad_wajs.order_items.persistence.repositories.ItemRepository;
+import pl.konrad_wajs.order_items.persistence.repositories.StoreRepository;
 
 @Service
 @Transactional
 public class ItemService {
 
     private ItemRepository itemRepository;
+    private StoreRepository storeRepository;
     private ItemMapper itemMapper;
 
     @Autowired
-    public ItemService(ItemRepository itemRepository, ItemMapper itemMapper) {
+    public ItemService(ItemRepository itemRepository, ItemMapper itemMapper, StoreRepository storeRepository) {
 
         this.itemRepository = itemRepository;
         this.itemMapper = itemMapper;
+        this.storeRepository = storeRepository;
+    }
+
+    public int checkItemAvailability(ItemDTO itemDTO) {
+        validateItemObject(itemDTO);
+
+        return storeRepository.findStoreElementBySizeAndColor(itemDTO.getSize(), itemDTO.getColor()).getAmount();
     }
 
     protected ItemDTO save(ItemDTO itemDTO, Long orderId) {
